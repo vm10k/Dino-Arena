@@ -1,4 +1,4 @@
-# Dino Arena
+# Dino Arena - Chrome Dinosaur Game.
 <img width="1983" height="793" alt="bannner" src="https://github.com/user-attachments/assets/4141e1dd-e837-4426-aff4-391e0a0a80aa" />
 
 Survive. Outrun. Win.
