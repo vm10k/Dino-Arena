@@ -41,7 +41,6 @@ We exclusively support self-hosted architecture for enterprise and dApp partners
 4. **Avoid Obstacles**: Jump over cacti and duck under Pterodactyls. The game speed increases the further you run.
 5. **Win**: The last dinosaur running wins the lobby's virtual prize pool.
 <img width="1983" height="793" alt="bannner" src="https://github.com/user-attachments/assets/4141e1dd-e837-4426-aff4-391e0a0a80aa" />
-<img width="1983" height="793" alt="banner for x" src="https://github.com/user-attachments/assets/af1c1ca9-1ca2-4759-b2e1-f4c3965d721b" />
 
 ## Game Modes
 * **Practice Mode (Free-to-Play)**: A completely free mode to enjoy the game, race against others, and hone your skills without any stakes or wallet connections required.
