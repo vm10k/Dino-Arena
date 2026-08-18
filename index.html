@@ -284,10 +284,27 @@ nav ul { display: flex; gap: 30px; align-items: center; }
             font-family: var(--font-body); font-weight: bold; line-height: 1;
         }
         .modal-close:hover { color: var(--primary); }
+	/* =========================================
+           MOBILE HAMBURGER STYLE (Hidden on Desktop)
+           ========================================= */
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .hamburger-btn:hover { color: var(--primary); }
+
         /* =========================================
            7. RESPONSIVE QUERIES
            ========================================= */
         @media (max-width: 900px) {
+            .hamburger-btn { display: block; } /* Show hamburger on mobile */
+            .header-enter-btn { display: none; } /* Hides the button on phone view */
+
             .hero { flex-direction: column; text-align: center; padding-top: 120px; gap: 40px;}
             .hero-title { font-size: 28px; }
             .hero-subtitle { margin: 0 auto 30px auto; font-size: 14px;}
@@ -295,7 +312,22 @@ nav ul { display: flex; gap: 30px; align-items: center; }
             .btn-primary, .btn-secondary { width: 100%; max-width: 300px; }
             header .btn-primary { width: auto; }
             header { padding: 15px 20px; }
-            nav { display: none; } 
+            
+            /* UPDATED: Nav becomes a pixelated dropdown menu on mobile */
+            nav { 
+                display: none; 
+                position: absolute;
+                top: 100%; left: 0; width: 100%;
+                background: rgba(247, 247, 247, 0.98);
+                backdrop-filter: blur(10px);
+                border-bottom: 1px dashed var(--border);
+                padding: 20px 0;
+                z-index: 99;
+            }
+            nav.active { display: block; } /* Toggle this class with JS */
+            nav ul { flex-direction: column; gap: 20px; text-align: center; align-items: center; }
+            nav a { font-size: 12px; }
+
             .game-window { max-width: 90%; margin: 0 auto; }
         }
 
@@ -406,15 +438,23 @@ nav ul { display: flex; gap: 30px; align-items: center; }
                 <li><a href="https://ezzeldeen.serv00.net/app">LEADERBOARD</a></li>
                 <li><a href="https://discord.gg/Cy6NT8kjkW">COMMUNITY</a></li>
                 <li>
-<a href="#" id="nav-open-modal" style="display: inline-flex; align-items: center; gap: 5px; color: var(--primary);">
-                        
-[ DOWNLOAD ]                   </a>
+                    <a href="#" id="nav-open-modal" style="display: inline-flex; align-items: center; gap: 5px; color: var(--primary);">
+                        [ DOWNLOAD ]
+                    </a>
                 </li>
             </ul>
         </nav>
 		
-         
-        <a href="https://ezzeldeen.serv00.net/app" class="btn-primary" style="padding: 10px 15px; font-size: 10px;">ENTER ARENA</a>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <a href="https://ezzeldeen.serv00.net/app" class="btn-primary header-enter-btn" style="padding: 10px 15px; font-size: 10px;">ENTER ARENA</a>
+            
+            <button id="mobile-menu-btn" class="hamburger-btn">
+            
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H21V8H3V6ZM3 12H21V14H3V12ZM3 18H21V20H3V18Z"/>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <section class="hero">
@@ -581,6 +621,13 @@ nav ul { display: flex; gap: 30px; align-items: center; }
             if (e.target === modal) {
                 modal.classList.remove('active');
             }
+        });
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const navMenu = document.querySelector('nav');
+
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            navMenu.classList.toggle('active');
         });
     </script>
 </body>
