@@ -121,7 +121,7 @@
             margin-right: 15px; 
         }
 
-        nav ul { display: flex; gap: 30px; }
+nav ul { display: flex; gap: 30px; align-items: center; }
         nav a {
             font-family: var(--font-pixel); font-size: 10px; color: var(--text-muted);
             transition: color 0.2s;
@@ -243,7 +243,47 @@
         .dev-credit {
             font-family: var(--font-pixel); font-size: 8px; color: var(--text-muted); line-height: 1.5;
         }
+/* =========================================
+           MODAL STYLES (DINO THEME)
+           ========================================= */
+        #nav-open-modal:hover { color: var(--btn-hover) !important; }
 
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 99999; backdrop-filter: blur(4px);
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: block; opacity: 1; }
+        
+        .modal-content {
+            background: var(--surface); border: 4px solid var(--border);
+            padding: 40px 30px; border-radius: 12px; text-align: center;
+            max-width: 400px; width: 90%;
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .modal-overlay.active .modal-content { transform: translate(-50%, -50%) scale(1); }
+        
+        .modal-icon { 
+            width: 70px; height: auto; margin-bottom: 20px; 
+            image-rendering: pixelated; mix-blend-mode: multiply;
+        }
+        .modal-title { 
+            font-family: var(--font-pixel); font-size: 18px; color: var(--text-main); 
+            margin-bottom: 15px; line-height: 1.4; 
+        }
+        .modal-text { 
+            color: var(--text-muted); font-size: 14px; margin-bottom: 25px; line-height: 1.6; 
+        }
+        
+        .modal-close {
+            position: absolute; top: 10px; right: 20px; font-size: 32px;
+            color: var(--text-muted); cursor: pointer; transition: 0.2s;
+            font-family: var(--font-body); font-weight: bold; line-height: 1;
+        }
+        .modal-close:hover { color: var(--primary); }
         /* =========================================
            7. RESPONSIVE QUERIES
            ========================================= */
@@ -365,8 +405,15 @@
                 <li><a href="#rules">RULES</a></li>
                 <li><a href="https://ezzeldeen.serv00.net/app">LEADERBOARD</a></li>
                 <li><a href="https://discord.gg/Cy6NT8kjkW">COMMUNITY</a></li>
+                <li>
+<a href="#" id="nav-open-modal" style="display: inline-flex; align-items: center; gap: 5px; color: var(--primary);">
+                        
+[ DOWNLOAD ]                   </a>
+                </li>
             </ul>
         </nav>
+		
+         
         <a href="https://ezzeldeen.serv00.net/app" class="btn-primary" style="padding: 10px 15px; font-size: 10px;">ENTER ARENA</a>
     </header>
 
@@ -442,8 +489,22 @@
         </div>
     </section>
 
-   
-
+       <div id="android-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span id="close-modal" class="modal-close">&times;</span>
+            <img src="assets/logo1.png" alt="Dino Icon" class="modal-icon">
+            <h2 class="modal-title"> [ DOWNLOAD ] </h2>
+			            <h2 class="modal-title">DINO ARENA</h2>
+            <p class="modal-text">Take the arena with you! Download the official APK for Android devices.</p>
+            
+            <a href="DinoArena.apk" class="btn-primary" style="display: flex; justify-content: center; align-items: center; gap: 10px; width: 100%; margin-top: 10px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 9H15V3H9V9H5L12 16L19 9ZM5 18V20H19V18H5Z"/>
+                </svg>
+                DOWNLOAD APK
+            </a>
+        </div>
+    </div>
     <footer>
         <div class="social-links">
 
@@ -466,7 +527,6 @@
 
         async function fetchLeaderboards() {
             try {
-                // Ensure this points to your actual backend server IP/Domain
                 const response = await fetch('/api/leaderboards'); 
                 const data = await response.json();
 
@@ -504,6 +564,24 @@
         }
 
         fetchLeaderboards();
+        const modal = document.getElementById('android-modal');
+        const openBtn = document.getElementById('nav-open-modal');
+        const closeBtn = document.getElementById('close-modal');
+
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
     </script>
 </body>
 </html>
