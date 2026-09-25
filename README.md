@@ -80,7 +80,7 @@ Either by drawing on your dino or adding stuff on it!
 <img width="231" height="250" alt="image" src="https://github.com/user-attachments/assets/b42095a5-6318-455c-bf50-2a68768a7fef" />
 
 ## Screenshots
-<img width="1280" height="576" alt="image" src="https://github.com/user-attachments/assets/10029cc0-45b2-46fc-98e7-f50854e5ca04" />
+<img width="1280" height="892" alt="image" src="https://github.com/user-attachments/assets/14389f2c-6552-4e33-976c-954abe12cf45" />
 <img width="1280" height="576" alt="image" src="https://github.com/user-attachments/assets/c4913381-d50e-4011-b968-40e170a4cef0" />
 
 ## Community
