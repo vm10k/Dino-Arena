@@ -77,11 +77,11 @@ Either by drawing on your dino or adding stuff on it!
 
 <img width="405" height="602" alt="image" src="https://github.com/user-attachments/assets/f9c638d1-193b-44e5-b479-dfaad52f8b18" />
 <img width="464" height="510" alt="image" src="https://github.com/user-attachments/assets/e15f452f-c840-49db-8afb-2999e445b1fb" />
+<img width="231" height="250" alt="image" src="https://github.com/user-attachments/assets/b42095a5-6318-455c-bf50-2a68768a7fef" />
 
 ## Screenshots
 <img width="1280" height="576" alt="image" src="https://github.com/user-attachments/assets/10029cc0-45b2-46fc-98e7-f50854e5ca04" />
 <img width="1280" height="576" alt="image" src="https://github.com/user-attachments/assets/c4913381-d50e-4011-b968-40e170a4cef0" />
-<img width="231" height="250" alt="image" src="https://github.com/user-attachments/assets/b42095a5-6318-455c-bf50-2a68768a7fef" />
 
 ## Community
 Join our community to discuss integration, report bugs, and stay updated on upcoming features and new platform integrations.
