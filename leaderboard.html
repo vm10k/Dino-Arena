@@ -110,30 +110,39 @@
             align-items: center; min-height: 100vh; padding: 120px 20px 80px 20px;
         }
 
+        .lb-title-container {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; margin-bottom: 8px; user-select: none;
+        }
+
+        .lb-arrow-btn {
+            font-family: var(--font-pixel); font-size: 18px; color: var(--text-main);
+            cursor: pointer; padding: 5px 12px; transition: 0.2s; border-radius: 4px;
+        }
+        .lb-arrow-btn:hover {
+            color: var(--primary); transform: scale(1.2);
+        }
+
+        .lb-title-center {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            line-height: 1.4; gap: 6px;
+        }
+
         .lb-title {
-            font-family: var(--font-pixel); font-size: 24px; color: var(--text-main);
-            margin-bottom: 10px; text-transform: uppercase; text-align: center;
+            font-family: var(--font-pixel); font-size: 22px; color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .lb-subtitle {
+            font-family: var(--font-pixel); font-size: 10px; color: var(--primary);
+            letter-spacing: 2px; font-weight: bold;
         }
 
         .lb-total-count {
-            font-family: var(--font-pixel); font-size: 10px; color: var(--text-muted);
-            margin-bottom: 30px; text-transform: uppercase; text-align: center;
+            font-family: var(--font-pixel); font-size: 9px; color: var(--text-muted);
+            margin-bottom: 25px; text-transform: uppercase; text-align: center;
         }
         .lb-total-count span { color: var(--primary); }
-
-        /* Tab switchers */
-        .tab-container {
-            display: flex; gap: 10px; margin-bottom: 20px; width: 100%; max-width: 600px;
-        }
-        .tab-btn {
-            flex: 1; background: var(--surface); border: 2px solid var(--border);
-            color: var(--text-muted); font-family: var(--font-pixel); font-size: 10px;
-            padding: 12px; cursor: pointer; transition: 0.2s; border-radius: 4px;
-        }
-        .tab-btn.active {
-            background: var(--btn-bg); color: #fff; border-color: var(--btn-bg);
-        }
-        .tab-btn:hover:not(.active) { border-color: var(--text-main); color: var(--text-main); }
 
         /* Search input */
         .controls-container {
@@ -170,7 +179,7 @@
         .lb-row:last-child { border-bottom: none; }
         
         .lb-rank-name { display: flex; align-items: center; }
-        .lb-rank { color: var(--text-muted); width: 65px; } /* Support wide ranks without overlap */
+        .lb-rank { color: var(--text-muted); width: 65px; }
         .lb-name-container { display: flex; align-items: center; gap: 6px; }
         .lb-name { color: var(--text-main); text-transform: uppercase; }
         .lb-score { color: var(--primary); text-align: right; }
@@ -206,7 +215,8 @@
             .back-btn { padding: 8px 12px; font-size: 8px; }
             .page-wrapper { padding-top: 100px; }
             .lb-title { font-size: 16px; }
-            .tab-btn { font-size: 8px; padding: 10px; }
+            .lb-subtitle { font-size: 8px; }
+            .lb-arrow-btn { font-size: 14px; padding: 4px 8px; }
             .lb-header { font-size: 9px; }
             .lb-row { font-size: 8px; }
             .lb-rank { width: 50px; }
@@ -228,16 +238,23 @@
             <img src="assets/logo1.png" alt="Dino Logo">
             DINO ARENA
         </div>
-        <a href="https://dinoarena.xyz/" class="back-btn">RETURN</a>
+        <a href="https://dinoarena.ct.ws/" class="back-btn">RETURN</a>
     </header>
 
     <div class="page-wrapper">
-        <h1 class="lb-title">TOP PLAYERS</h1>
+        <!-- Interactive Clickable Switch Title -->
+        <div class="lb-title-container">
+            <span class="lb-arrow-btn" onclick="toggleMode()">&lt;</span>
+            <div class="lb-title-center">
+                <h1 class="lb-title">TOP PLAYERS</h1>
+                <span id="lb-subtitle-mode" class="lb-subtitle">[DISTANCE]</span>
+            </div>
+            <span class="lb-arrow-btn" onclick="toggleMode()">&gt;</span>
+        </div>
+
         <div id="lb-total-count" class="lb-total-count" style="display: none;">
             TOTAL ARENA RUNNERS: <span id="total-count-num">0</span>
         </div>
-        
-     
 
         <div class="controls-container">
             <input type="text" id="searchInput" class="search-input" placeholder="SEARCH DINO..." autocomplete="off">
@@ -260,9 +277,9 @@
         </div>
     </div>
 
-<script>
-        let boardData = { distance: [], earnings: [] };
-        let activeTab = "distance"; 
+    <script>
+        let boardData = { distance: [], wins: [] };
+        let activeTab = "distance"; // "distance" or "wins"
         let currentPage = 1;
         const playersPerPage = 10;
 
@@ -275,6 +292,7 @@
         const totalCountWrapper = document.getElementById('lb-total-count');
         const totalCountNum = document.getElementById('total-count-num');
         const scoreTypeHeader = document.getElementById('score-type-header');
+        const subtitleMode = document.getElementById('lb-subtitle-mode');
 
         const trophies = {
             1: `<svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" style="margin-bottom:-1px; filter: drop-shadow(0 0 2px #f59e0b);"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 0 0 3.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>`,
@@ -286,16 +304,15 @@
 
         socket.on('leaderboardUpdate', function(data) {
             boardData.distance = (data.distanceRank || []).map((p, i) => ({ name: p.name, val: p.val, rank: i + 1, unit: 'm' }));
-            boardData.earnings = (data.earningsRank || []).map((p, i) => ({ name: p.name, val: p.val, rank: i + 1, unit: ' PTS' }));
+            boardData.wins = (data.winsRank || []).map((p, i) => ({ name: p.name, val: p.val, rank: i + 1, unit: ' W' }));
 
             paginationWrapper.style.display = 'flex';
             totalCountWrapper.style.display = 'block';
             
-            const totalCount = data.totalPlayers || Math.max(boardData.distance.length, boardData.earnings.length);
+            const totalCount = data.totalPlayers || Math.max(boardData.distance.length, boardData.wins.length);
             totalCountNum.innerText = totalCount;
 
             renderBoard();
-            
             socket.disconnect();
         });
 
@@ -303,9 +320,18 @@
             lbContent.innerHTML = '<div style="text-align:center; padding: 30px; color:red; font-family:var(--font-pixel); font-size:10px;">SERVER OFFLINE</div>';
         });
 
+        window.toggleMode = function() {
+            activeTab = (activeTab === "distance") ? "wins" : "distance";
+            currentPage = 1;
+            renderBoard();
+        };
+
         function renderBoard() {
+            subtitleMode.innerText = (activeTab === 'distance') ? '[DISTANCE]' : '[WINS]';
+            scoreTypeHeader.innerText = (activeTab === 'distance') ? 'DISTANCE' : 'WINS';
+
             const query = searchInput.value.toLowerCase().trim();
-            const rawList = boardData[activeTab];
+            const rawList = boardData[activeTab] || [];
 
             const filtered = rawList.filter(p => p.name.toLowerCase().includes(query));
 
@@ -332,7 +358,6 @@
                 else if (p.rank === 3) rowClass += ' rank-3';
 
                 const trophy = trophies[p.rank] || '';
-
                 const displayName = p.name.length > 12 ? p.name.substring(0, 10) + '...' : p.name;
 
                 html += `
@@ -353,20 +378,7 @@
             pageInfo.innerText = `PAGE ${currentPage} / ${totalPages}`;
             prevBtn.disabled = currentPage === 1;
             nextBtn.disabled = currentPage === totalPages;
-
-            scoreTypeHeader.innerText = activeTab === 'distance' ? 'DISTANCE' : 'POINTS';
         }
-
-        window.switchTab = function(tabName) {
-            if (activeTab === tabName) return;
-            activeTab = tabName;
-            currentPage = 1; 
-
-            document.getElementById('tab-distance').classList.toggle('active', tabName === 'distance');
-            document.getElementById('tab-earnings').classList.toggle('active', tabName === 'earnings');
-
-            renderBoard();
-        };
 
         searchInput.addEventListener('input', () => {
             currentPage = 1;
@@ -382,7 +394,7 @@
 
         nextBtn.addEventListener('click', () => {
             const query = searchInput.value.toLowerCase().trim();
-            const filtered = boardData[activeTab].filter(p => p.name.toLowerCase().includes(query));
+            const filtered = (boardData[activeTab] || []).filter(p => p.name.toLowerCase().includes(query));
             const totalPages = Math.ceil(filtered.length / playersPerPage);
 
             if (currentPage < totalPages) {
